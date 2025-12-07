@@ -1,4 +1,4 @@
-# ============================================== 加载配置和工作环境 ============================================
+# ============================================== Loading and Preparation ============================================
 Sys.setenv(LANGUAGE = "en")
 options(stringsAsFactors = FALSE)
 rm(list=ls());gc()
@@ -18,7 +18,9 @@ library(ggsci)
 library(ggpubr)
 rm(list=ls())
 
-####人工导入clinical文件
+
+# ============================================== Loading SNV-Data ============================================
+## 人工导入clinical文件
 write.table(clinicaldata_TJUS, file='clinicalall.tsv', quote=F, row.names=F, sep='\t')          
 TJUS <- read.maf(maf = './#TJUS_data/TJUS.maf',clinicalData = './#TJUS_data/clinicalall.tsv')
 ####Complexmap_DATAinput####
