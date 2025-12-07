@@ -56,10 +56,11 @@ str(pdata)
 matMut <- matMut[, pdata$Tumor_Sample_Barcode]
 
 # ============================================== ComplexHeatmap ============================================
+## -------------------定义图形参数------------------
 alter_fun <- list(
   background = function(x, y, w, h) {                                 
     grid.rect(x, y, w-unit(0.5, "mm"), h-unit(0.5, "mm"),             #grid.rect用来绘制矩形【x,y确定矩形位置；w,h确定矩形高度宽度
-              gp = gpar(fill = "#dcddde", col = NA))                    #gp为图形参数，col=NA不设置矩形边框
+              gp = gpar(fill = "#dcddde", col = NA))                  #gp为图形参数，col=NA不设置矩形边框
   },
   Missense_Mutation = function(x, y, w, h) {
     grid.rect(x, y, w-unit(0.5, "mm"), h-unit(0.5, "mm"), 
@@ -89,8 +90,10 @@ alter_fun <- list(
 heatmap_legend_param <- list(title = "Alternations", 
                              at = c("Missense_Mutation", "Nonsense_Mutation" , "Multi_Hit","Frame_Shift_Del","In_Frame_Del","Frame_Shift_Ins"), 
                              labels = c("Missense_Mutation", "Nonsense_Mutation" , "Multi_Hit","Frame_Shift_Del","In_Frame_Del","Frame_Shift_Ins"))   
-###配色环节
-display.brewer.all()   ##查看所有配色
+
+
+## -------------------定义颜色参数------------------
+display.brewer.all()   # 查看所有配色
 brewer.pal(9,"YlOrRd")
 
 col <- c(Missense_Mutation = "#ED7B61", 
@@ -102,12 +105,8 @@ col <- c(Missense_Mutation = "#ED7B61",
          In_Frame_Ins='#A89C87')        
 #分类变量
 color_group      = c(P = "#006093",R = "#CF1C29")
-
 color_Pathology  = c(`ULMS`='#94B5D7',`HGESS` ='#9897BC',`LGESS` ='#C8B8D4',`AS` ='#D3E6EF')
-
 color_FIGO       = c(I ='#29A15C', `II` ='#F49600', `III` ='#428DBF', `IV`  ='#BE0E23')
-
-
 color_Radiotherapy     = c(Yes = "#B8D4E6", No  = '#dcddde')
 color_Chemotherapy     = c(Yes = "#216FB0", No = '#dcddde')
 color_Targetedtherapy  = c(Yes = "#08519C", No  = '#dcddde')
@@ -120,7 +119,8 @@ color_Purity = colorRamp2(c(0,1),c("white","purple3"))
 color_ploidy = colorRamp2(c(0,5.5),c("white","#B80EC4"))
 color_TMB    = colorRamp2(c(0,152),c("white","#9D4097"))
 
-##底部注释
+## -------------------定义注释参数------------------
+### 底部注释
 ha_bottom <- HeatmapAnnotation(Pathology = pdata$Pathology,
                                FIGO=pdata$FIGO,
                                Age = pdata$Age,
@@ -142,19 +142,23 @@ ha_bottom <- HeatmapAnnotation(Pathology = pdata$Pathology,
                                show_annotation_name = TRUE,
                                annotation_name_side = "left",
                                annotation_name_gp = gpar(fontsize = 10)
-)
+                              )
 
-##顶端注释
+### 顶端注释
 ha_top<- HeatmapAnnotation(Group = pdata$SeqSite,
                            TMB = pdata$TMB,
                            MSI_Score = pdata$MSI_Score,
                            Purity = pdata$Purity,
                            Ploidy= pdata$Ploidy,
-                           col = list(MSI_Score=color_MSI,Purity=color_Purity,Ploidy=color_ploidy,Group = color_group,TMB=color_TMB), 
+                           col = list(MSI_Score=color_MSI,
+                                      Purity=color_Purity,
+                                      Ploidy=color_ploidy,
+                                      Group = color_group,
+                                      TMB=color_TMB), 
                            show_annotation_name = TRUE,
                            annotation_name_side = "left",
                            annotation_name_gp = gpar(fontsize = 10)
-)
+                          )
 column_title <- "TJUS_ONCOPRINT "
 ##根据原发及复发进行分组
 grouplist <- pdata[,1:2]
@@ -205,17 +209,17 @@ mat_long <- melt(matMuttmp, id.vars = "gene", value.name = "Variant_Classificati
 levels(factor(mat_long$Variant_Classification))
 ##整理临床数据
 pdata <- getClinicalData(TJUS.R)                                               #通过maftools获取临床数据
-pdata <- subset(pdata, pdata$Tumor_Sample_Barcode %in% colnames(matMut))     # %in%是一个二元操作符，用于测试左边的元素是否出现在右边的向量中
+pdata <- subset(pdata, pdata$Tumor_Sample_Barcode %in% colnames(matMut))     
 pdata = as.data.frame(pdata)
-pdata$Pathol_Subtype = factor(pdata$Pathol_Subtype)
-pdata$FIGO           = factor(pdata$FIGO)
-pdata$Recurrent_site = factor(pdata$Recurrent_site)
-pdata$Radiotherapy   = factor(pdata$Radiotherapy)
-pdata$Chemotherapy   = factor(pdata$Chemotherapy)
-pdata$Prognosis      = factor(pdata$Prognosis)
+pdata$Pathol_Subtype  = factor(pdata$Pathol_Subtype)
+pdata$FIGO            = factor(pdata$FIGO)
+pdata$Recurrent_site  = factor(pdata$Recurrent_site)
+pdata$Radiotherapy    = factor(pdata$Radiotherapy)
+pdata$Chemotherapy    = factor(pdata$Chemotherapy)
+pdata$Prognosis       = factor(pdata$Prognosis)
 pdata$sequencing_site = factor(pdata$sequencing_site)
-pdata$Immunity       =factor(pdata$Immunity)
-pdata$TMB            =as.numeric(pdata$TMB)
+pdata$Immunity        = factor(pdata$Immunity)
+pdata$TMB       =as.numeric(pdata$TMB)
 pdata$Livetime  = as.numeric(pdata$Livetime)
 pdata$Age       = as.numeric(pdata$Age)
 pdata$MSI_Score = as.numeric(pdata$MSI_Score)
