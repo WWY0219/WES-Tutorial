@@ -52,7 +52,8 @@ pdata$Ploidy     = as.numeric(pdata$Ploidy)
 pdata$Tumor_Size = as.numeric(pdata$Tumor_Size)
 str(pdata)
 matMut <- matMut[, pdata$Tumor_Sample_Barcode]
-##确定图形参数##
+
+# ============================================== ComplexHeatmap ============================================
 alter_fun <- list(
   background = function(x, y, w, h) {                                 
     grid.rect(x, y, w-unit(0.5, "mm"), h-unit(0.5, "mm"),             #grid.rect用来绘制矩形【x,y确定矩形位置；w,h确定矩形高度宽度
@@ -82,10 +83,6 @@ alter_fun <- list(
     grid.rect(x, y, w-unit(0.5, "mm"), h-unit(0.5, "mm"), 
               gp = gpar(fill = col["In_Frame_Ins"], col = NA))
   }
-  #  Splice_Site = function(x, y, w, h) {
-  #   grid.rect(x, y, w-unit(0.5, "mm"),h-unit(0.5, "mm"),
-  #            gp = gpar(fill = col["Splice_Site"], col = NA))
-  #}
 )
 heatmap_legend_param <- list(title = "Alternations", 
                              at = c("Missense_Mutation", "Nonsense_Mutation" , "Multi_Hit","Frame_Shift_Del","In_Frame_Del","Frame_Shift_Ins"), 
@@ -102,17 +99,17 @@ col <- c(Missense_Mutation = "#ED7B61",
          Frame_Shift_Ins="#FFFFCC",
          In_Frame_Ins='#A89C87')        
 #分类变量
-color_group        = c(P = "#006093",R = "#CF1C29")
+color_group      = c(P = "#006093",R = "#CF1C29")
 
-color_Pathology    = c(`ULMS`='#94B5D7',`HGESS` ='#9897BC',`LGESS` ='#C8B8D4',`AS` ='#D3E6EF')
+color_Pathology  = c(`ULMS`='#94B5D7',`HGESS` ='#9897BC',`LGESS` ='#C8B8D4',`AS` ='#D3E6EF')
 
-color_FIGO         = c(I ='#29A15C', `II` ='#F49600', `III` ='#428DBF', `IV`  ='#BE0E23')
+color_FIGO       = c(I ='#29A15C', `II` ='#F49600', `III` ='#428DBF', `IV`  ='#BE0E23')
 
 
-color_Radiotherapy = c(Yes = "#B8D4E6", No  = '#dcddde')
-color_Chemotherapy = c(Yes = "#216FB0", No  = '#dcddde')
-color_Targetedtherapy     = c(Yes = "#08519C", No  = '#dcddde')
-color_status       = c(death = '#D3D3D3',live =  '#A5D6A7')
+color_Radiotherapy     = c(Yes = "#B8D4E6", No  = '#dcddde')
+color_Chemotherapy     = c(Yes = "#216FB0", No = '#dcddde')
+color_Targetedtherapy  = c(Yes = "#08519C", No  = '#dcddde')
+color_status           = c(death = '#D3D3D3',live =  '#A5D6A7')
 col_OS       = colorRamp2(c(0, 100), c("white", "red3"))
 col_age      = colorRamp2(c(20,80),c("white","#CC4763"))
 col_size     = colorRamp2(c(0,40),c("white","skyblue"))
