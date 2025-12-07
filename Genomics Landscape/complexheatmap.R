@@ -15,6 +15,7 @@ library(paletteer)
 library(RColorBrewer)
 library(circlize)
 library(ggsci)
+library(ggpubr)
 rm(list=ls())
 
 ####人工导入clinical文件
@@ -165,20 +166,20 @@ sample_order <- grouplist %>%
 
 ##绘图
 P_all <- oncoPrint(matMut,
-          bottom_annotation = ha_bottom,
-          top_annotation = ha_top, #注释信息在底部
-          alter_fun = alter_fun, 
-          col = col, 
-          show_pct = T,                                                        #展示基因突变频率
-          show_heatmap_legend = T,
-          column_title = column_title, 
-          heatmap_legend_param = heatmap_legend_param,
-          row_names_side = "left",
-          pct_side = "right",
-          alter_fun_is_vectorized = FALSE,
-          column_order = sample_order,
-          column_split = factor(pdata$SeqSite, levels = c("P", "R"))
-)
+                   bottom_annotation = ha_bottom,
+                   top_annotation = ha_top,                                             #注释信息在底部
+                   alter_fun = alter_fun, 
+                   col = col, 
+                   show_pct = T,                                                        #展示基因突变频率
+                   show_heatmap_legend = T,
+                   column_title = column_title, 
+                   heatmap_legend_param = heatmap_legend_param,
+                   row_names_side = "left",
+                   pct_side = "right",
+                   alter_fun_is_vectorized = FALSE,
+                   column_order = sample_order,
+                   column_split = factor(pdata$SeqSite, levels = c("P", "R"))
+                  )
 P_all
 ##save result
 pdf("../03.Output/filtered_oncoprint_all.pdf", width = 10.33, height = 8.16)
